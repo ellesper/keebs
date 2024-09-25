@@ -2,22 +2,30 @@ points:
   zones:
     matrix:
       anchor:
+        shift: [100, -150]
         rotate: 5
       columns:
         pinky2:
+          key.column_net: P21
         pinky:
+          key.column_net: P20
         ring:
+          key.column_net: P19
           key.splay: -3
           key.origin: [-12, -19]
           key.stagger: 8
         middle:
+          key.column_net: P18
           key.splay: -3
           key.stagger: 5
         index:
+          key.column_net: P15
           key.stagger: -6
         inner:
+          key.column_net: P14
           key.stagger: -2
         inner2:
+          key.column_net: P16
           key.spread: 21
           key.stagger: 15
           rows.home.skip: true
@@ -25,21 +33,28 @@ points:
           rows.upper.skip: true
       rows:
         bottom:
+          row_net: P7
         home:
+          row_net: P6
         top:
+          row_net: P5
         upper:
+          row_net: P4
     thumbfan:
       anchor:
         ref: matrix_inner_bottom
         shift: [-20, -23]
       columns:
         nearer:
+          key.column_net: P18
           rows.thumb.skip: true
           key.spread: 2
         near:
+          key.column_net: P15
           key.spread: 
           rows.thumb.skip: true
         home:
+          key.column_net: P14
           rows.thumb.skip: true
           key.spread: 21.28
           key.splay: -20
@@ -47,16 +62,16 @@ points:
           key.shift: [0, 10]
           key.height: 1.5 * U
         far:
+          key.column_net: P16
           key.spread: 21.25
           key.splay: -0
           key.origin: [-9.5, -9]
       rows:
         thumb2:
+          row_net: P9
         thumb:
+          row_net: P8
   rotate: -10
-  mirror:
-    ref: thumbfan_far_thumb
-    distance: 50
 outlines:
   board_left:
     - where: /^matrix_.*/
@@ -123,67 +138,6 @@ outlines:
       what: rectangle
       size: [U + 3, U + 3]
       fillet: 1
-  board_right:
-    - where: /^mirror_matrix_.*/
-      what: rectangle
-      size: [U + 3, U + 3]
-      fillet: 3
-    - where: mirror_thumbfan_home_thumb2
-      what: rectangle
-      size: [U + 30, U + 25]
-      fillet: 3
-    - where: mirror_thumbfan_nearer_thumb2
-      what: rectangle
-      size: [U + 3, U + 5]
-      fillet: 3
-    - where: mirror_thumbfan_near_thumb2
-      what: rectangle
-      size: [U + 20, U + 5]
-      fillet: 3
-    - where: mirror_thumbfan_far_thumb2
-      what: rectangle
-      size: [U + 5, U + 5]
-      fillet: 3
-    - where: mirror_thumbfan_far_thumb
-      what: rectangle
-      size: [U + 5, U + 7]
-      fillet: 3
-    - where: mirror_matrix_ring_upper
-      what: rectangle
-      size: [U + 5, U + 3]
-      fillet: 3
-    - where: mirror_matrix_ring_top
-      what: rectangle
-      size: [U + 5, U + 3]
-      fillet: 3
-    - where: mirror_matrix_inner_top
-      what: rectangle
-      size: [U + 60, U + 10]
-      fillet: 3
-    - where: mirror_matrix_inner_upper
-      what: rectangle
-      size: [U + 60, U + 7]
-      fillet: 3
-    - where: mirror_matrix_inner2_bottom
-      what: rectangle
-      size: [U + 18, U + 15]
-      fillet: 3
-    - where: mirror_matrix_middle_bottom
-      what: rectangle
-      size: [U + 18, U + 10]
-      fillet: 3
-    - where: mirror_matrix_inner_bottom
-      what: rectangle
-      size: [U + 43, U + 20]
-      fillet: 3
-    - where: mirror_matrix_pinky2_upper
-      what: rectangle
-      size: [U + 3, U + 3]
-      fillet: 1
-    - where: mirror_matrix_pinky_upper
-      what: rectangle
-      size: [U + 5, U + 3]
-      fillet: 1
 pcbs:
   left:
     outlines:
@@ -195,7 +149,7 @@ pcbs:
         where: /^((matrix_)|(thumbfan_)).*/
         params:
           keycaps: true
-          reverse: false
+          reverse: true
           hotswap: true
           from: "{{column_net}}"
           to: "{{colrow}}"
@@ -213,7 +167,7 @@ pcbs:
           orientation: "down"
         where:
           ref: matrix_inner_top
-          shift: [22,12]
+          shift: [20,12]
           rotate: -90
       oled:
         what: oled
@@ -223,45 +177,25 @@ pcbs:
           SCL: P3
         where:
           ref: matrix_inner_top
-          shift: [16,-8]
+          shift: [14,-8]
           rotate: 90
-  right:
-    outlines:
-      main:
-        outline: board_right
-    footprints:
-      hotswap:
-        what: mx
-        where: /^((mirror_matrix_)|(mirror_thumbfan_)).*/
+      reset_left:
+        what: button
         params:
-          keycaps: true
-          reverse: false
-          hotswap: true
-          from: "{{column_net}}"
-          to: "{{colrow}}"
-      diode_main:
-        what: diode
-        where: /^((mirror_matrix_)|(mirror_thumbfan_)).*/
-        params:
-          from: "{{colrow}}"
-          to: "{{row_net}}"
-        adjust:
-          shift: [0, -5]
-      promicro:
-        what: promicro
-        params:
-          orientation: "down"
+          from: GND
+          to: RST
         where:
-          ref: mirror_matrix_inner_top
-          shift: [22,12]
-          rotate: 90
-      oled:
-        what: oled
-        params:
-          side: "F"
-          SDA: P2
-          SCL: P3
-        where:
-          ref: mirror_matrix_inner_top
-          shift: [28,-8]
+          ref: matrix_inner_top
+          shift: [35, 2]
           rotate: -90
+      trrs_left:
+        what: trrs
+        params:
+          reverse: true
+          A: ""
+          B: VCC
+          C: GND
+          D: P0
+        where:
+          ref: matrix_inner_top
+          shift: [35, 27]
